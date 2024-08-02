@@ -3,7 +3,8 @@ from airflow.decorators import dag, task
 import pandas as pd
 import numpy as np
 from airflow.providers.postgres.hooks.postgres import PostgresHook
-import sqlalchemy
+import os
+
 
 @dag(
     dag_id = 'churn',
@@ -13,11 +14,12 @@ import sqlalchemy
     tags=["ETL", 'me', 'churn']
 )
 def prepare_churn_dataset():
-	#ваш код здесь #
+    #ваш код здесь #
     
     @task()
     def create_table() -> None:
         from sqlalchemy import MetaData, Table, Column, String, Float, Integer, DateTime, UniqueConstraint, inspect
+        print(os.environ)
         metadata = MetaData()
         users_churn_table = Table(
             'users_churn',
@@ -53,12 +55,13 @@ def prepare_churn_dataset():
         if not inspect(conn).has_table(users_churn_table.name): 
             metadata.create_all(conn)
             
-	# ваш код здесь #
+    # ваш код здесь #
     @task()
     def extract(**kwargs):
-
+        #random comment
         hook = PostgresHook('source_db')
         conn = hook.get_conn()
+
         sql = f"""
         select
             c.customer_id, c.begin_date, c.end_date, c.type, c.paperless_billing, c.payment_method, c.monthly_charges, c.total_charges,
