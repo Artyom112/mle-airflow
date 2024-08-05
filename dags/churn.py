@@ -19,7 +19,7 @@ def prepare_churn_dataset():
     @task()
     def create_table() -> None:
         from sqlalchemy import MetaData, Table, Column, String, Float, Integer, DateTime, UniqueConstraint, inspect
-        print(os.environ)
+
         metadata = MetaData()
         users_churn_table = Table(
             'users_churn',
@@ -54,6 +54,7 @@ def prepare_churn_dataset():
     
         if not inspect(conn).has_table(users_churn_table.name): 
             metadata.create_all(conn)
+
             
     # ваш код здесь #
     @task()
