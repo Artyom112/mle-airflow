@@ -28,7 +28,7 @@ def create_table() -> None:
         Column('dependents', String),
         Column('multiple_lines', String),
         Column('target', Integer),
-        UniqueConstraint('customer_id', name='unique_customer_constraint')
+        UniqueConstraint('customer_id', name='alt_unique_customer_constraint')
         )
     
     hook = PostgresHook('destination_db')
